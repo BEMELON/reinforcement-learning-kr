@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import random
+
+# environment.py 에서 GraphicDisplay, Env 클래스를 import 합니다.
 from environment import GraphicDisplay, Env
 
 
@@ -12,7 +14,7 @@ class PolicyIteration:
         # 상 하 좌 우 동일한 확률로 정책 초기화
         self.policy_table = [[[0.25, 0.25, 0.25, 0.25]] * env.width
                                     for _ in range(env.height)]
-        # 마침 상태의 설정
+        # 마침 상태의 설정 << 마침상태란??
         self.policy_table[2][2] = []
         # 감가율
         self.discount_factor = 0.9
@@ -87,12 +89,14 @@ class PolicyIteration:
         policy = self.get_policy(state)
         policy_sum = 0.0
         # 정책에 담긴 행동 중에 무작위로 한 행동을 추출
+        # 코드, 개념이해 X) 20180705
         for index, value in enumerate(policy):
             policy_sum += value
             if random_pick < policy_sum:
                 return index
 
     # 상태에 따른 정책 반환
+    # 정책 -> 가능한 행동 중에 특정 행동을 취할 확률, 혹은 특정 행동
     def get_policy(self, state):
         if state == [2, 2]:
             return 0.0
@@ -104,7 +108,10 @@ class PolicyIteration:
         return round(self.value_table[state[0]][state[1]], 2)
 
 if __name__ == "__main__":
+    # env -> Env 클래스 객체
     env = Env()
+
+    # policy_iteration -> PolicyIteration 클래스 객체
     policy_iteration = PolicyIteration(env)
     grid_world = GraphicDisplay(policy_iteration)
     grid_world.mainloop()
